@@ -115,5 +115,8 @@ t.fd(300)
 t.lt(90)
 t.fd(50)
 t.end_fill()
-t.goto(100, 100)
+
+t.color('white')
+t.goto(200, 200)
+
 mainloop()
