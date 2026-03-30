@@ -360,7 +360,7 @@ t.end_fill()
 sleep(3)
 t.clear()
 
-t.lt(170)
+t.lt(340)
 t.color('red')
 t.begin_fill()
 for _ in range(3):
