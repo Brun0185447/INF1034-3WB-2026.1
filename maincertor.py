@@ -1,6 +1,9 @@
 from turtle import *
 from time import sleep
 t = Turtle()
+
+t.speed(0)
+
 t.pu()
 t.goto(300, 200)
 t.pd()
@@ -360,7 +363,7 @@ t.end_fill()
 sleep(3)
 t.clear()
 
-t.lt(170)
+t.lt(340)
 t.color('red')
 t.begin_fill()
 for _ in range(3):
