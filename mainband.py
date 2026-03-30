@@ -324,6 +324,7 @@ t.fd(105)
 t.end_fill()
 sleep(3)
 t.clear()
+def_desenha_bandeira_africasul():
 
 t.color("yellow")
 t.begin_fill()
