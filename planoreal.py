@@ -1,5 +1,6 @@
 from turtle import*
 from math import *
+from time import sleep
 def raiz_u(x):
     return sqrt(x)
 
