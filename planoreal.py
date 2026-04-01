@@ -57,17 +57,17 @@ for x in range(-99, -2):
 
 t.color('yellow')
 def funcao_d(x):
-    return x**2 - 5*x + 6
+    return 5 - x**2
 
 
 t.color('black')
 def funcao_e(x):
-    return 
+    return x**2 - 5*x + 6
 
 
 t.color('orange')
 def funcao_f(x):
-    return 
+    return x**3 - x**2 -x + 1
 
 
 
