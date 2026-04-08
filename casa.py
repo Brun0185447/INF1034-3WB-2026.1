@@ -27,6 +27,15 @@ while True:
     draw.circle(window, (255, 255, 255), (150, 300), 50)
     draw.circle(window, (255, 255, 255), (200, 300), 50)
     draw.circle(window, (255, 255, 255), (250, 300), 50)
+    draw.rect(window, (0, 0, 128), (215, 200, 30, 20))
+    draw.rect(window, (150, 75, 0), (240, 200, 30, 45))
+    draw.circle(window, (0, 0, 0), (250, 250), 10)
+    draw.circle(window, (255, 255, 0), (0, 0), 50)
+    draw.rect(window, (255, 255, 0), (10, 0, 5, 20))
+    draw.rect(window, (255, 255, 0), (10, 0, 5, 20))
+    draw.rect(window, (255, 255, 0), (10, 0, 5, 20))
+    draw.rect(window, (255, 255, 0), (10, 0, 5, 20))
+
 
     window.blit(batman_img, (0, 0))
 
