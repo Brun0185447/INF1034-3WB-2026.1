@@ -23,7 +23,10 @@ while True:
     draw.rect(window, (0, 255, 0), (500, 600, 600, 50))
     draw.rect(window, (128, 128, 128), (200, 300, 50, 50))
     draw.circle(window, (255, 255, 255), (100, 300), 50)
-    draw.polygon(window, (255, 165, 0), ((200, 300), (250, 150), (250, 300))
+    draw.polygon(window, (255, 165, 0), ((200, 300), (250, 150), (250, 300)))
+    draw.circle(window, (255, 255, 255), (150, 300), 50)
+    draw.circle(window, (255, 255, 255), (200, 300), 50)
+    draw.circle(window, (255, 255, 255), (250, 300), 50)
 
     window.blit(batman_img, (0, 0))
 
