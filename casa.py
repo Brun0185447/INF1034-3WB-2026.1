@@ -35,20 +35,21 @@ while True:
     draw.line(window, (255, 255, 0), (100, 100), (150, 150), 3)
     draw.line(window, (255, 255, 0), (100, 150), (110, 50), 3)
     draw.line(window, (255, 255, 0), (80, 70), (80, 100), 3)
-    draw.rect(window, (150, 75, 0), (520, 450, 50, 100))
-    draw.circle(window, (0, 255, 0), (520, 450), 65)
-    draw.circle(window, (255, 0, 0), (520, 400), 10)
-    draw.circle(window, (255, 255, 0), (530, 400), 10)
-    draw.circle(window, (255, 165, 0), (510, 400), 10)
-    draw.circle(window, (128, 0, 128), (520, 350), 5)
+    draw.line(window, (255, 255, 0), (80, 30), (80, 150), 3)
+    draw.rect(window, (150, 75, 0), (550, 500, 50, 150))
+    draw.circle(window, (0, 255, 0), (570, 500), 65)
+    draw.circle(window, (255, 0, 0), (570, 500), 10)
+    draw.circle(window, (255, 255, 0), (570, 530), 10)
+    draw.circle(window, (255, 165, 0), (530, 500), 10)
+    draw.circle(window, (128, 0, 128), (550, 500), 5)
     
 
 
-    window.blit(batman_img, (80, 120))
+    window.blit(batman_img, (40, 460))
 
     batman_text = batman_font.render("I am Batman", True, (0, 0, 0))
-    window.blit(batman_text, (100, 400))
+    window.blit(batman_text, (850, 200))
     batman_text = batman_font.render("I'm vengeance", True, (0, 0, 0))
-    window.blit(batman_text, (100, 500))
+    window.blit(batman_text, (810, 400))
     
     display.update()
