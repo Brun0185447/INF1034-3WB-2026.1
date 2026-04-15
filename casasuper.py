@@ -74,9 +74,11 @@ while running:
 
     window.blit(batman_img, (40, 460))
 
-    batman_text = batman_font.render("I am Batman", True, (0, 0, 0))
+    batman_text = batman_font.render("I am Batman", True, (0, 0, 128))
     window.blit(batman_text, (850, 200))
-    batman_text = batman_font.render("I'm vengeance", True, (0, 0, 0))
+    batman_text = batman_font.render("I'm vengeance", True, (0, 0, 128))
     window.blit(batman_text, (810, 400))
+    batman_text = batman_font.render("I am the night", True, (0, 0, 128))
+    window.blit(batman_text, (800, 300))
     
     display.update()
