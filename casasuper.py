@@ -1,5 +1,7 @@
 from pygame import*
 
+
+
 init()
 
 window = display.set_mode((1280, 720))
@@ -8,6 +10,9 @@ clock = time.Clock()
 
 batman_img = image.load("batman.png")
 batman_img = transform.scale(batman_img, (200, 200))
+lightsaber_img = image.load("lightsaber_PNG40.png")
+lightsaber_img = transform.scale(lightsaber_img, (200, 200))
+
 
 batman_font = font.Font("batmfa__.ttf", 50)
 
@@ -25,6 +30,7 @@ while running:
     for ev in event.get():
         if ev.type == QUIT:
             running == False
+            quit()
         if ev.type == KEYDOWN:
             key_pressed = ev.key
             if key_pressed == K_SPACE:
@@ -58,11 +64,11 @@ while running:
     draw.rect(window, (255, 255, 255), (290, 500, 85, 150))
     draw.circle(window, (0, 0, 0), (300, 600), 5)
     draw.circle(window, (255, 255, 0), (mouse_x, mouse_y), 50)
-    draw.line(window, (255, 255, 0), (mouse_x, mouse_y), (180, 50), 3)
-    draw.line(window, (255, 255, 0), (mouse_x, mouse_y), (150, 150), 3)
-    draw.line(window, (255, 255, 0), (mouse_x, mouse_y), (110, 50), 3)
-    draw.line(window, (255, 255, 0), (mouse_x, mouse_y), (80, 100), 3)
-    draw.line(window, (255, 255, 0), (mouse_x, mouse_y), (80, 150), 3)
+    draw.line(window, (255, 255, 0), (mouse_x, mouse_y), (mouse_x+80, mouse_y), 3)
+    draw.line(window, (255, 255, 0), (mouse_x, mouse_y), (mouse_x+50, mouse_y+100), 3)
+    draw.line(window, (255, 255, 0), (mouse_x, mouse_y), (mouse_x+10, mouse_y), 3)
+    draw.line(window, (255, 255, 0), (mouse_x, mouse_y), (mouse_x-20, mouse_y+50), 3)
+    draw.line(window, (255, 255, 0), (mouse_x, mouse_y), (mouse_x-20, mouse_y+100), 3)
     draw.rect(window, (150, 75, 0), (550, 500, 50, 150))
     draw.circle(window, (0, 255, 0), (570, 500), 65)
     draw.circle(window, (255, 0, 0), (570, 500), 10)
@@ -73,6 +79,9 @@ while running:
 
 
     window.blit(batman_img, (40, 460))
+
+    window.blit(lightsaber_img, (20, 20))
+
 
     batman_text = batman_font.render("I am Batman", True, (0, 0, 128))
     window.blit(batman_text, (850, 200))
