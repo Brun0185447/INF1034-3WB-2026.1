@@ -2,7 +2,7 @@ import random
 
 def jogar():
     lista_palavras = ["PYTHON", "DESENVOLVIMENTO", "COMPUTADOR", "ALGORITMO"]
-    lista_palavras[0]
+    lista_palavras[1]
     palavra_secreta = random.choice(lista_palavras).upper()
     letras_acertadas = ["_" for letra in palavra_secreta]
     
