@@ -5,7 +5,7 @@ print(valida_email("lfbicalho@puc.com"))
 
 def possuiMaiuscula(palavra):
     for letra in palavra:
-        if 'A' <= letra <= 'Z': #letra.islower()
+        if 'A' <= letra <= 'Z': #letra.isupper()
             return True
     return False
 
@@ -43,7 +43,14 @@ def criptografa_senha(senha):
     senha_cripto = ""
     for char in senha:
         if char.isdigit():
-            pass
+            #Copiar lógica do maiúsculo, trocando ref para '0' e o 26 para 10
+            ref = ord('0') 
+            ascii_char = ord(char) #Etapa 1
+            pos_alpha = ascii_char - ref #Etapa 2
+            pos_cesar = pos_alpha + 3 #Etapa 3
+            pos_cesar = pos_cesar % 10 #Etapa 4
+            letra_cesar = chr(ref + pos_cesar) #Etapa 5
+            senha_cripto += letra_cesar
         elif'A' <= char <= 'Z':
             ref = ord('A') #65
             ascii_char = ord(char) #Etapa 1
@@ -53,6 +60,16 @@ def criptografa_senha(senha):
             letra_cesar = chr(ref + pos_cesar) #Etapa 5
             senha_cripto += letra_cesar
         elif 'a' <= char <= 'z':
-            pass
+            #Copiar lógica do maiúsculo, trocando ref para 'a'
+            ref = ord('a') #65
+            ascii_char = ord(char) #Etapa 1
+            pos_alpha = ascii_char - ref #Etapa 2
+            pos_cesar = pos_alpha + 3 #Etapa 3
+            pos_cesar = pos_cesar % 26 #Etapa 4
+            letra_cesar = chr(ref + pos_cesar) #Etapa 5
+            senha_cripto += letra_cesar
         else:
             senha_cripto += char
+    return senha_cripto
+
+print(criptografa_senha('ZARALHAR@'))
