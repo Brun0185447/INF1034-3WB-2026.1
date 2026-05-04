@@ -47,7 +47,11 @@ def criptografa_senha(senha):
         elif'A' <= char <= 'Z':
             ref = ord('A') #65
             ascii_char = ord(char) #Etapa 1
-            
+            pos_alpha = ascii_char - ref #Etapa 2
+            pos_cesar = pos_alpha + 3 #Etapa 3
+            pos_cesar = pos_cesar % 26 #Etapa 4
+            letra_cesar = chr(ref + pos_cesar) #Etapa 5
+            senha_cripto += letra_cesar
         elif 'a' <= char <= 'z':
             pass
         else:
