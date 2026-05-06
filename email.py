@@ -50,7 +50,49 @@ def criptografa_senha(senha):
         else:
             senha_cripto += char
     return senha_cripto
-  
+pygame.init()
+tela = pygame.display.set_mode((400, 300))
+fonte = pygame.font.SysFont(batmfa__.ttf, 20)
+clock = pygame.time.Clock()
+
+email_usuario = ''
+resultado_validacao = ''
+cor_texto = (255, 255, 255)
+
+running = True
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+        
+        
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_RETURN:
+                
+                if valida_email(email_usuario):
+                    resultado_validacao = "Email Valido!"
+                    cor_texto = (0, 255, 0) 
+                else:
+                    resultado_validacao = "Email Invalido! Use @puc.com"
+                    cor_texto = (255, 0, 0) 
+            elif event.key == pygame.K_BACKSPACE:
+                email_usuario = email_usuario[:-1]
+            else:
+                email_usuario += event.unicode
+
+    
+    tela.fill((30, 30, 30))
+    
+   
+    texto_surf = fonte.render(f"Email: {email_usuario}", True, (255, 255, 255))
+    resultado_surf = fonte.render(resultado_validacao, True, cor_texto)
+    
+    tela.blit(texto_surf, (10, 50))
+    tela.blit(resultado_surf, (10, 100))
+    
+    pygame.display.flip()
+    clock.tick(30)
+
 pygame.init()
 screen = pygame.display.set_mode((600, 300))
 pygame.display.set_caption("Validador de Senha/Email")
