@@ -1,4 +1,4 @@
-from pygame import
+
 import pygame
 import sys
 
@@ -80,7 +80,7 @@ while running:
                     cor_mensagem = (0, 255, 0) 
                 else:
                     mensagem = "Senha Inválida! Tente novamente."
-                    cor_mensagem = (255, 0, 0) # Vermelho
+                    cor_mensagem = (255, 0, 0) 
                 input_text = "" 
             elif event.key == pygame.K_BACKSPACE:
                 input_text = input_text[:-1]
@@ -95,7 +95,7 @@ while running:
     pygame.display.flip()
     clock.tick(30)
 
-init()
+
 
 batman_img = image.load("batman.png")
 batman_img = transform.scale(batman_img, (200, 200))
