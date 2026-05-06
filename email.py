@@ -53,12 +53,8 @@ def criptografa_senha(senha):
 
 pygame.init()
 screen = pygame.display.set_mode((600, 300))
-pygame.display.set_caption("Validador de Senha/Email")
+pygame.display.set_caption("Validador de Email")
 font = pygame.font.Font('batmfa__.ttf', 20)
-clock = pygame.time.Clock()
-
-tela = pygame.display.set_mode((400, 300))
-fonte = pygame.font.SysFont('batmfa__.ttf', 20)
 clock = pygame.time.Clock()
 
 email_usuario = ''
@@ -87,22 +83,27 @@ while running:
                 email_usuario += event.unicode
 
     
-    tela.fill((30, 30, 30))
+    screen.fill((30, 30, 30))
     
    
-    texto_surf = fonte.render(f"Email: {email_usuario}", True, (255, 255, 255))
-    resultado_surf = fonte.render(resultado_validacao, True, cor_texto)
+    texto_surf = font.render(f"Email: {email_usuario}", True, (255, 255, 255))
+    resultado_surf = font.render(resultado_validacao, True, cor_texto)
     
-    tela.blit(texto_surf, (10, 50))
-    tela.blit(resultado_surf, (10, 100))
+    screen.blit(texto_surf, (10, 50))
+    screen.blit(resultado_surf, (10, 100))
     
     pygame.display.flip()
     clock.tick(30)
 
+pygame.quit()
+sys.exit()
 
+pygame.init()
 screen = pygame.display.set_mode((600, 300))
+pygame.display.set_caption("Validador de Senha")
 font = pygame.font.Font('batmfa__.ttf', 20)
 clock = pygame.time.Clock()
+
 
 input_text = ""
 mensagem = "Digite a senha (min 8 car, A, a, 0-9)"
@@ -111,7 +112,6 @@ senha_final = ""
 
 running = True
 while running:
-    screen.fill((30, 30, 30))
     
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
