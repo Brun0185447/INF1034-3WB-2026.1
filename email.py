@@ -55,7 +55,7 @@ def criptografa_senha(senha):
 pygame.init()
 screen = pygame.display.set_mode((600, 300))
 pygame.display.set_caption("Validador de Senha/Email")
-font = pygame.font.Font(None, 32)
+font = pygame.font.Font('batmfa__.ttf', 20)
 clock = pygame.time.Clock()
 
 input_text = ""
@@ -100,7 +100,7 @@ while running:
 batman_img = image.load("batman.png")
 batman_img = transform.scale(batman_img, (200, 200))
 
-batman_font = font.Font("batmfa__.ttf", 50)
+batman_font = font.Font("batmfa__.ttf", 20)
 
 mixer.music.load("batman_1966.mp3")
 mixer.music.play(-1)
