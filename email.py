@@ -50,9 +50,15 @@ def criptografa_senha(senha):
         else:
             senha_cripto += char
     return senha_cripto
+
 pygame.init()
+screen = pygame.display.set_mode((600, 300))
+pygame.display.set_caption("Validador de Senha/Email")
+font = pygame.font.Font('batmfa__.ttf', 20)
+clock = pygame.time.Clock()
+
 tela = pygame.display.set_mode((400, 300))
-fonte = pygame.font.SysFont(batmfa__.ttf, 20)
+fonte = pygame.font.SysFont('batmfa__.ttf', 20)
 clock = pygame.time.Clock()
 
 email_usuario = ''
@@ -73,7 +79,7 @@ while running:
                     resultado_validacao = "Email Valido!"
                     cor_texto = (0, 255, 0) 
                 else:
-                    resultado_validacao = "Email Invalido! Use @puc.com"
+                    resultado_validacao = "Email Invalido! Tente novamente."
                     cor_texto = (255, 0, 0) 
             elif event.key == pygame.K_BACKSPACE:
                 email_usuario = email_usuario[:-1]
@@ -93,9 +99,8 @@ while running:
     pygame.display.flip()
     clock.tick(30)
 
-pygame.init()
+
 screen = pygame.display.set_mode((600, 300))
-pygame.display.set_caption("Validador de Senha/Email")
 font = pygame.font.Font('batmfa__.ttf', 20)
 clock = pygame.time.Clock()
 
@@ -135,8 +140,10 @@ while running:
     screen.blit(msg_surface, (50, 100))
     pygame.display.flip()
     clock.tick(30)
+pygame.quit()
+sys.exit()
 
-init()
+pygame.init()
 
 batman_img = image.load("batman.png")
 batman_img = transform.scale(batman_img, (200, 200))
@@ -183,8 +190,7 @@ while True:
     
     display.update()
 
-pygame.quit()
-sys.exit()
+
 
 
 
