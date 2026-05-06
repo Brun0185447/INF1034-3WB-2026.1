@@ -1,4 +1,3 @@
-
 import pygame
 import sys
 
@@ -94,6 +93,8 @@ while running:
     screen.blit(msg_surface, (50, 100))
     pygame.display.flip()
     clock.tick(30)
+
+init()
 
 batman_img = image.load("batman.png")
 batman_img = transform.scale(batman_img, (200, 200))
