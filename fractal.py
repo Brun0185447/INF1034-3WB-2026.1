@@ -1,104 +1,99 @@
 import turtle
 import tkinter as tk
 
+# Configuração inicial do ambiente
 screen = turtle.Screen()
-screen.title("Fractais Recursivos")
+screen.setup(800, 800)
+screen.colormode(255)
 t = turtle.Turtle()
 t.speed(0)
-t.hideturtle()
-turtle.colormode(255)
 
-# Desenho Fácil (Até 6 linhas, sem função)
-# Fractal: Espiral Quadrada
+# --- 1. FÁCIL (200XP): ESPIRAL QUADRADA ---
+# Desenho recursivo visual (auto-similar), menos de 6 linhas, sem função.
+# A lógica de crescimento simula a recursão de forma iterativa.
+def desenhar_facil():
+    t.reset()
+    for i in range(100):
+        t.pencolor(i*2, 0, 255-i*2) # Mudança de cores progressiva
+        t.forward(i * 3)
+        t.left(91)
 
-def desenho_facil(tamanho=10):
-    t.pu()
-    t.goto(0, 0)
-    t.pd()
-    for i in range(50):
-        t.fd(i * 5)
-        t.rt(90)
-sleep(3)
-t.clear()
+# --- 2. MÉDIO (300XP): ÁRVORE DE 3 RAMOS ---
+# 6 a 15 linhas, usa função genérica (tamanho, ângulo, nível).
+# Alteração: 3 ramos em vez dos 2 tradicionais de sala de aula.
+def arvore_tripla(t, tam, ang, nivel):
+    if nivel > 0:
+        t.pencolor(0, 255 - (nivel * 30), 50) # Cores mudam conforme a profundidade
+        t.forward(tam)
+        t.left(ang)
+        arvore_tripla(t, tam * 0.7, ang, nivel - 1) # Ramo Esquerda
+        t.right(ang)
+        arvore_tripla(t, tam * 0.7, ang, nivel - 1) # Ramo Centro
+        t.right(ang)
+        arvore_tripla(t, tam * 0.7, ang, nivel - 1) # Ramo Direita
+        t.left(ang)
+        t.backward(tam)
 
-# Desenho Médio (6-15 linhas, com função)
-# Fractal: Árvore Binária (Modificada: 3 ramos)
+# --- 3. DIFÍCIL (400XP): TRIÂNGULO DE SIERPINSKI ---
+# 15+ linhas, função separada para a forma geométrica base (triângulo).
+# Função recursiva genérica com controle de profundidade e tamanho.
 
-def arvore_recursiva(tamanho, angulo, t):
-    if tamanho > 10:
-        t.fd(tamanho)
-        t.lt(angulo)
-        arvore_recursiva(tamanho - 15, angulo, t)
-        t.rt(angulo * 2)
-        arvore_recursiva(tamanho - 15, angulo, t)
-        t.lt(angulo)
-        t.backward(tamanho)
+def desenhar_triangulo_base(t, tam):
+    """Função obrigatória separada para a forma geométrica (Nível Difícil)"""
+    for _ in range(3):
+        t.forward(tam)
+        t.left(120)
 
-def chamar_arvore(tamanho_base=100, angulo=30):
-    t.clear()
-    t.pu() 
-    t.goto(0, -200)
-    t.pd()
-    t.lt(90)
-    arvore_recursiva(tamanho_base, angulo, t)
-    t.rt(90)
-sleep(3)
-t.clear()
-
-# Desenho Difícil (15+ linhas, com função)
-# Fractal: Tapete de Sierpinski Simplificado
-
-def desenhar_quadrado(t, tamanho):
-    """Desenha um quadrado preenchido"""
-    t.begin_fill()
-    for _ in range(4):
-        t.fd(tamanho)
-        t.rt(90)
-    t.end_fill()
-
-def sierpinski(t, tamanho, ordem):
-    t.clear()
-    if ordem == 0:
-        desenhar_quadrado(t, tamanho)
+def fractal_sierpinski(t, tam, nivel):
+    """Função recursiva principal"""
+    if nivel == 0:
+        t.fillcolor(255, nivel * 40, 100)
+        t.begin_fill()
+        desenhar_triangulo_base(t, tam)
+        t.end_fill()
     else:
-        for _ in range(4):
-            sierpinski(t, tamanho / 3, ordem - 1)
-            t.fd(tamanho / 3)
-            sierpinski(t, tamanho / 3, ordem - 1)
-            t.fd(tamanho / 3)
-            t.rt(90)
-            t.fd(tamanho / 3)
-            t.rt(90)
-            t.fd(2 * tamanho / 3)
-            t.rt(180)
+        # Lógica de subdivisão em 3 partes
+        fractal_sierpinski(t, tam / 2, nivel - 1)
+        t.forward(tam / 2)
+        fractal_sierpinski(t, tam / 2, nivel - 1)
+        t.backward(tam / 2)
+        t.left(60)
+        t.forward(tam / 2)
+        t.right(60)
+        fractal_sierpinski(t, tam / 2, nivel - 1)
+        t.left(60)
+        t.backward(tam / 2)
+        t.right(60)
 
-def chamar_sierpinski(tamanho=300, ordem=2):
+# --- EXTRA (200XP): SLIDER PARA ATUALIZAÇÃO ---
+def atualizar_desenho(valor):
+    """Atualiza a abertura da árvore em tempo real usando o slider"""
+    angulo = int(valor)
     t.clear()
-    t.pu()
-    t.goto(-150, 150)
-    t.pd()
-    sierpinski(t, tamanho, ordem)
-sleep(3)
-t.clear()
+    t.penup()
+    t.goto(0, -250)
+    t.setheading(90)
+    t.pendown()
+    turtle.tracer(0) # Desliga animação para atualizar instantaneamente
+    arvore_tripla(t, 120, angulo, 4)
+    turtle.update() # Renderiza o desenho final
 
-# Interatividade com Slider
-def atualizar(val):
-    # Escolha qual fractal atualizar (ex: o médio - árvore)
-    param = float(val)
-    chamar_arvore(tamanho_base=100, angulo=param)
+# Integração do Slider com Tkinter
+root = screen.getcanvas().master
+frame = tk.Frame(root)
+frame.pack(side="bottom")
 
-# Janela de controle (Slider)
-root = tk.Tk()
-root.title("Controle")
-slider = tk.Scale(root, from_=10, to=90, orient=tk.HORIZONTAL, command=atualizar)
-slider.set(30)
-slider.pack()
+tk.Label(frame, text="Ângulo da Árvore (Extra):").pack(side="left")
+slider = tk.Scale(frame, from_=10, to=90, orient="horizontal", command=atualizar_desenho)
+slider.set(30) # Valor inicial
+slider.pack(side="left")
 
-# Execução Inicial 
-# chamar_facil()
-# chamar_arvore()
-chamar_sierpinski()
+# Botões para ver os outros desenhos
+tk.Button(frame, text="Desenho Fácil", command=desenhar_facil).pack(side="left")
+tk.Button(frame, text="Sierpinski (Difícil)", 
+          command=lambda: (t.reset(), fractal_sierpinski(t, 300, 4))).pack(side="left")
 
+print("Use o slider e os botões na janela do Turtle para interagir.")
 screen.mainloop()
 
 
