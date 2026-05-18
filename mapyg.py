@@ -10,7 +10,7 @@ tam_cat=(num_max - num_min)/num_cat
 lista_total=[0] * num_cat
 
 def contabiliza_totais(nums, lista_total):
-    #Para cada mu,ero na minha lista
+    #Para cada numero na minha lista
     for i in range(len(nums)):
         if nums[i] == num_max:
             lista_total[-1] += 1
