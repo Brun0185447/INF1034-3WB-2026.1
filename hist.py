@@ -3,7 +3,7 @@ import random
 import sys
 
 pygame.init()
-tela = pygame.display.set_mode((800, 600))
+screen = pygame.display.set_mode((800, 600))
 pygame.display.set_caption("Visualizador Interativo de Histogramas")
 fonte = pygame.font.SysFont(None, 24)
 
