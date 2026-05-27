@@ -1,105 +1,99 @@
 import pygame
-import sys
 
-# 1. Configurações Básicas
 pygame.init()
-LARGURA, ALTURA = 800, 600
-TELA = pygame.display.set_mode((LARGURA, ALTURA))
-pygame.display.set_caption("Exemplo de Animações Pygame")
-RELOGIO = pygame.time.Clock()
+tela = pygame.display.set_mode((800, 600))
+pygame.display.set_caption("Exemplo Pygame - Sprites e Eventos")
+clock = pygame.time.Clock()
 
-# Função auxiliar para carregar e fatiar spritesheets
-def carregar_spritesheet(arquivo, qtd_colunas, qtd_linhas, largura_frame, altura_frame):
-    spritesheet = pygame.image.load(arquivo).convert_alpha()
-    frames = []
-    for linha in range(qtd_linhas):
-        for coluna in range(qtd_colunas):
-            x = coluna * largura_frame
-            y = linha * altura_frame
-            frame = spritesheet.subsurface(pygame.Rect(x, y, largura_frame, altura_frame))
-            frames.append(frame)
-    return frames
+# Carregando as imagens exigidas
+# Imagem 1: Fundo executado constantemente
+fundo = pygame.image.load('Orc.png').convert() 
+fundo = pygame.transform.scale(fundo, (800, 600))
 
-class Personagem(pygame.sprite.Sprite):
-    def __init__(self):
-        super().__init__()
-        # Exemplo fictício de spritesheet: 160x50px, com 4 frames de 40x50px
-        # Substitua 'megaman_spritesheet.png' pelo seu arquivo e ajuste as medidas
-        self.frames_andando = carregar_spritesheet('megaman_spritesheet.png', 4, 1, 40, 50)
-        
-        self.imagem_atual = 0
-        self.image = self.frames_andando[self.imagem_atual]
-        self.rect = self.image.get_rect()
-        self.rect.topleft = (100, 200)
-        
-        self.velocidade = 5
-        self.tempo_animacao = 0
-        self.velocidade_animacao = 100 # milissegundos
-        
-        # Estados
-        self.andando = False
-        self.pulando = False
+# Imagem 2: Personagem (executa movimento enquanto a tecla é pressionada)
+personagem = pygame.image.load('Edit Hammer Bro.png').convert_alpha()
+person_rect = personagem.get_rect()
+person_rect.topleft = (100, 450)
 
-    def atualizar_animacao(self):
-        if self.andando:
-            self.tempo_animacao += RELOGIO.get_time()
-            if self.tempo_animacao >= self.velocidade_animacao:
-                self.tempo_animacao = 0
-                self.imagem_atual = (self.imagem_atual + 1) % len(self.frames_andando)
-                self.image = self.frames_andando[self.imagem_atual]
-        else:
-            self.imagem_atual = 0 # Frame estático
-            self.image = self.frames_andando[self.imagem_atual]
+# Imagem 3: Spritesheet e Animações (EXTRA: Esquerda/Direita e Pulo)
+soldado = pygame.image.load('Soldier.png').convert_alpha()
 
-    def update(self):
-        # Movimentação contínua (pressionando a tecla)
-        keys = pygame.key.get_pressed()
-        self.andando = False # Reseta o estado
-        
-        if keys[pygame.K_RIGHT]:
-            self.rect.x += self.velocidade
-            self.andando = True
-        
-        # EXTRA: Movimentação para a esquerda
-        if keys[pygame.K_LEFT]:
-            self.rect.x -= self.velocidade
-            self.andando = True
+# Configurações de física e movimento
+velocidade = 5
+pulando = False
+altura_pulo = 15
+gravidade = 1
 
-        self.atualizar_animacao()
+# Variáveis de controle de animação
+frame_atual = 0
+tempo_animacao = 0
+tempo_por_frame = 100 # milissegundos
 
-    def pular(self):
-        # Executado apenas uma vez ao apertar a tecla/clicar
-        if not self.pulando:
-            self.pulando = True
-            # Adicione lógica de pulo aqui (ex: alterar self.rect.y)
+def obter_frame(sheet, quadro, largura_frame, altura_frame, escala=2):
+    """Extrai um quadro da spritesheet"""
+    imagem = pygame.Surface((largura_frame, altura_frame), pygame.SRCALPHA)
+    imagem.blit(sheet, (0, 0), (quadro * largura_frame, 0, largura_frame, altura_frame))
+    return pygame.transform.scale(imagem, (largura_frame * escala, altura_frame * escala))
 
-# 2. Inicialização dos Objetos
-grupo_personagem = pygame.sprite.Group()
-jogador = Personagem()
-grupo_personagem.add(jogador)
-
-# 3. Game Loop
+# Loop principal do jogo
 rodando = True
+direcao_direita = True
+
 while rodando:
-    TELA.fill((50, 50, 50)) # Cor de fundo
+    # 1. A imagem do fundo deve ser executada constantemente
+    tela.blit(fundo, (0, 0))
 
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
+    # Eventos do Pygame (Essencial para a Imagem 3)
+    for evento in pygame.event.get():
+        if evento.type == pygame.QUIT:
             rodando = False
+            
+        # A Imagem 3 deve ser executada com UM CLIQUE ou AO PRESSIONAR UMA TECLA
+        if evento.type == pygame.KEYDOWN:
+            if evento.key == pygame.K_SPACE and not pulando:
+                pulando = True
+
+    # 2. A Imagem 2 se move enquanto pressiono a tecla, e para ao soltar
+    teclas = pygame.key.get_pressed()
+    
+    # Movimentação do personagem e controle de animação
+    movendo = False
+    if teclas[pygame.K_LEFT]:
+        person_rect.x -= velocidade
+        direcao_direita = False
+        movendo = True
+    if teclas[pygame.K_RIGHT]:
+        person_rect.x += velocidade
+        direcao_direita = True
+        movendo = True
+
+    # Lógica de pulo (EXTRA)
+    if pulando:
+        person_rect.y -= altura_pulo
+        altura_pulo -= gravidade
+        if altura_pulo < -15:
+            pulando = False
+            altura_pulo = 15
+            
+    # Desenho da Imagem 2 (Parada ou em movimento)
+    tela.blit(personagem, person_rect)
+
+    # 3. EXTRA: Animações do personagem
+    if movendo or pulando:
+        tempo_animacao += clock.get_time()
+        if tempo_animacao >= tempo_por_frame:
+            tempo_animacao = 0
+            frame_atual = (frame_atual + 1) % 4 # Supondo 4 quadros na spritesheet
+            
+    # Exibe a sprite do personagem animada (tamanho 32x32 na spritesheet)
+    frame_sprite = obter_frame(soldado, frame_atual, 32, 32, escala=3)
+    if not direcao_direita:
+        frame_sprite = pygame.transform.flip(frame_sprite, True, False)
         
-        # Terceira animação: Executada com UM CLIQUE ou AO PRESSIONAR UMA TECLA
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_SPACE: # Exemplo: Pressionar Espaço para pular
-                jogador.pular()
+    tela.blit(frame_sprite, (person_rect.x, person_rect.y - 50))
 
-    # Atualiza as posições e o estado da animação 
-    grupo_personagem.update()
-
-    # Desenha os sprites
-    grupo_personagem.draw(TELA)
-
+    # Atualização da tela e controle de FPS
     pygame.display.flip()
-    RELOGIO.tick(60)
+    clock.tick(60)
 
 pygame.quit()
-sys.exit()
