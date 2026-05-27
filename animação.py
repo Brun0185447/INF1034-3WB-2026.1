@@ -5,12 +5,11 @@ screen = pygame.display.set_mode((800, 600))
 pygame.display.set_caption("Exemplo Pygame - Sprites e Eventos")
 clock = pygame.time.Clock()
 
-fundo = pygame.image.load('Orc.png').convert() 
-fundo = pygame.transform.scale(fundo, (800, 600))
+orc = pygame.image.load('Orc.png').convert() 
+fundo = pygame.transform.scale(orc, (800, 600))
 
 personagem = pygame.image.load('Edit Hammer Bro.png').convert_alpha()
-person_rect = personagem.get_rect()
-person_rect.topleft = (100, 450)
+personagem.get_rect().topleft = (100, 450)
 
 soldado = pygame.image.load('Soldier.png').convert_alpha()
 
@@ -33,35 +32,33 @@ direcao_direita = True
 
 while running:
     screen.blit(fundo, (0, 0))
-
     for evento in pygame.event.get():
         if evento.type == pygame.QUIT:
             running = False
-            
+
         if evento.type == pygame.KEYDOWN:
             if evento.key == pygame.K_SPACE and not pulando:
                 pulando = True
-
-    teclas = pygame.key.get_pressed()
-    
+                
+    teclas = pygame.key.get_pressed()    
     movendo = False
     if teclas[pygame.K_LEFT]:
-        person_rect.x -= velocidade
+        personagem.get_rect().x -= velocidade
         direcao_direita = False
         movendo = True
     if teclas[pygame.K_RIGHT]:
-        person_rect.x += velocidade
+        personagem.get_rect().x += velocidade
         direcao_direita = True
         movendo = True
 
     if pulando:
-        person_rect.y -= altura_pulo
+        personagem.get_rect().y -= altura_pulo
         altura_pulo -= gravidade
         if altura_pulo < -15:
             pulando = False
             altura_pulo = 15
             
-    screen.blit(personagem, person_rect)
+    screen.blit(personagem, personagem.get_rect())
 
     if movendo or pulando:
         tempo_animacao += clock.get_time()
@@ -73,7 +70,7 @@ while running:
     if not direcao_direita:
         frame_sprite = pygame.transform.flip(frame_sprite, True, False)
         
-    screen.blit(frame_sprite, (person_rect.x, person_rect.y - 50))
+    screen.blit(frame_sprite, (personagem.get_rect().x, personagem.get_rect().y - 50))
 
     pygame.display.flip()
     clock.tick(60)
