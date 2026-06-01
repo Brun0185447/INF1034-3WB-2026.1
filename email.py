@@ -1,4 +1,4 @@
-import pygame
+from pygame import*
 import sys
 
 def valida_email(email):
@@ -51,11 +51,11 @@ def criptografa_senha(senha):
             senha_cripto += char
     return senha_cripto
 
-pygame.init()
-screen = pygame.display.set_mode((600, 300))
-pygame.display.set_caption("Validador de Email")
-font = pygame.font.Font('batmfa__.ttf', 20)
-clock = pygame.time.Clock()
+init()
+screen = display.set_mode((600, 300))
+display.set_caption("Validador de Email")
+font = font.Font('batmfa__.ttf', 20)
+clock = time.Clock()
 
 email_usuario = ''
 resultado_validacao = ''
@@ -63,13 +63,13 @@ cor_texto = (255, 255, 255)
 
 running = True
 while running:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
+    for event in event.get():
+        if event.type == QUIT:
             running = False
         
         
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_RETURN:
+        if event.type == KEYDOWN:
+            if event.key == K_RETURN:
                 
                 if valida_email(email_usuario):
                     resultado_validacao = "Email Valido!"
@@ -77,7 +77,7 @@ while running:
                 else:
                     resultado_validacao = "Email Invalido! Tente novamente."
                     cor_texto = (255, 0, 0) 
-            elif event.key == pygame.K_BACKSPACE:
+            elif event.key == K_BACKSPACE:
                 email_usuario = email_usuario[:-1]
             else:
                 email_usuario += event.unicode
@@ -92,17 +92,17 @@ while running:
     screen.blit(texto_surf, (10, 50))
     screen.blit(resultado_surf, (10, 100))
     
-    pygame.display.flip()
+    display.flip()
     clock.tick(30)
 
-pygame.quit()
+quit()
 sys.exit()
 
-pygame.init()
-screen = pygame.display.set_mode((600, 300))
-pygame.display.set_caption("Validador de Senha")
-font = pygame.font.Font('batmfa__.ttf', 20)
-clock = pygame.time.Clock()
+init()
+screen = display.set_mode((600, 300))
+display.set_caption("Validador de Senha")
+font = font.Font('batmfa__.ttf', 20)
+clock = time.Clock()
 
 
 input_text = ""
@@ -113,12 +113,12 @@ senha_final = ""
 running = True
 while running:
     
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
+    for event in event.get():
+        if event.type == QUIT:
             running = False
         
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_RETURN:
+        if event.type == KEYDOWN:
+            if event.key == K_RETURN:
                 
                 if valida_senha(input_text):
                     senha_final = criptografa_senha(input_text)
@@ -128,7 +128,7 @@ while running:
                     mensagem = "Senha Inválida! Tente novamente."
                     cor_mensagem = (255, 0, 0) 
                 input_text = "" 
-            elif event.key == pygame.K_BACKSPACE:
+            elif event.key == K_BACKSPACE:
                 input_text = input_text[:-1]
             else:
                 input_text += event.unicode
@@ -138,17 +138,17 @@ while running:
     
     screen.blit(txt_surface, (50, 50))
     screen.blit(msg_surface, (50, 100))
-    pygame.display.flip()
+    display.flip()
     clock.tick(30)
-pygame.quit()
+quit()
 sys.exit()
 
-pygame.init()
+init()
 
 batman_img = image.load("batman.png")
 batman_img = transform.scale(batman_img, (200, 200))
 
-batman_font = font.Font("batmfa__.ttf", 20)
+batman_font = font("batmfa__.ttf", 20)
 
 mixer.music.load("batman_1966.mp3")
 mixer.music.play(-1)
@@ -188,7 +188,7 @@ while True:
     batman_text = batman_font.render("I'm vengeance", True, (0, 0, 0))
     window.blit(batman_text, (810, 400))
     
-    pygame.display.update()
+    display.update()
     sys.exit()
 
 
