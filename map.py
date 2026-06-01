@@ -7,6 +7,7 @@ display.set_caption('Hello World!')
 clock= time.Clock()
 tile_size=60
 
+
 mapa=[
     "GGGGGGAGGGGGG",
     "GGGGGGAGGGGGG",
@@ -19,6 +20,7 @@ mapa=[
     "AAAAAAAAAAAAA",
     "AAAAAAAAAAAAA",
 ]
+
 
 
 while True:
