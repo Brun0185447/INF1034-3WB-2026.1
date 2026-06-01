@@ -188,7 +188,8 @@ while True:
     batman_text = batman_font.render("I'm vengeance", True, (0, 0, 0))
     window.blit(batman_text, (810, 400))
     
-    display.update()
+    pygame.display.update()
+    sys.exit()
 
 
 
