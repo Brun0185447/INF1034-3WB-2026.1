@@ -1,4 +1,4 @@
-import pygame
+from pygame import* 
 import sys
 
 pygame.init()
@@ -34,13 +34,13 @@ while True:
      for i in range(len(mapa)): #Para cada linha
         for j in range(len(mapa[i])): #Para cada coluna
            if mapa[i][j] == "G":
-               pygame.draw.rect(screen, (39,153,0), (tile_size*j, tile_size*i, tile_size, tile_size))
+               draw.rect(screen, (39,153,0), (tile_size*j, tile_size*i, tile_size, tile_size))
            elif mapa[i][j] == "P":
-               pygame.draw.rect(screen, (230,235,134), (tile_size*j, tile_size*i, tile_size, tile_size))
+               draw.rect(screen, (230,235,134), (tile_size*j, tile_size*i, tile_size, tile_size))
            elif mapa[i][j] == "A":
-               pygame.draw.rect(screen, (63,125,232), (tile_size*j, tile_size*i, tile_size, tile_size))
+               draw.rect(screen, (63,125,232), (tile_size*j, tile_size*i, tile_size, tile_size))
 
 
 
-     pygame.display.update()
+     display.update()
      clock.tick(60)
