@@ -1,10 +1,10 @@
 from pygame import* 
 import sys
 
-pygame.init()
-screen = pygame.display.set_mode((800, 600))
-pygame.display.set_caption('Hello World!')
-clock= pygame.time.Clock()
+init()
+screen = display.set_mode((800, 600))
+display.set_caption('Hello World!')
+clock= time.Clock()
 tile_size=60
 
 mapa=[
