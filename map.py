@@ -1,10 +1,10 @@
-from pygame import* 
+import pygame
 import sys
 
-init()
-screen = display.set_mode((800, 600))
-display.set_caption('Hello World!')
-clock= time.Clock()
+pygame.init()
+screen = pygame.display.set_mode((800, 600))
+pygame.display.set_caption('Hello World!')
+clock= pygame.time.Clock()
 tile_size=60
 
 
@@ -24,8 +24,8 @@ mapa=[
 
 
 while True:
-     for ev in event.get():
-        if ev.type == QUIT:
+     for ev in pygame.event.get():
+        if ev.type == pygame.QUIT:
            quit()
            sys.exit()
 
@@ -36,13 +36,13 @@ while True:
      for i in range(len(mapa)): #Para cada linha
         for j in range(len(mapa[i])): #Para cada coluna
            if mapa[i][j] == "G":
-               draw.rect(screen, (39,153,0), (tile_size*j, tile_size*i, tile_size, tile_size))
+               pygame.draw.rect(screen, (39,153,0), (tile_size*j, tile_size*i, tile_size, tile_size))
            elif mapa[i][j] == "P":
-               draw.rect(screen, (230,235,134), (tile_size*j, tile_size*i, tile_size, tile_size))
+               pygame.draw.rect(screen, (230,235,134), (tile_size*j, tile_size*i, tile_size, tile_size))
            elif mapa[i][j] == "A":
-               draw.rect(screen, (63,125,232), (tile_size*j, tile_size*i, tile_size, tile_size))
+               pygame.draw.rect(screen, (63,125,232), (tile_size*j, tile_size*i, tile_size, tile_size))
 
 
 
-     display.update()
+     pygame.display.update()
      clock.tick(60)

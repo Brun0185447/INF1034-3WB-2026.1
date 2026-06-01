@@ -157,28 +157,28 @@ window = pygame.display.set_mode((1280, 720))
 window.fill((152, 209, 250))
 
 while True:
-    for ev in event.get():
-        if ev.type == QUIT:
+    for ev in pygame.event.get():
+        if ev.type == pygame.QUIT:
             quit()
             sys.exit()
 
-    draw.rect(window, (150, 75, 0), (0, 650, 2000, 100))
-    draw.rect(window, (128, 0, 128), (200, 450, 200, 200))
-    draw.circle(window, (255, 255, 255), (950, 110), 50)
-    draw.polygon(window, (255, 165, 0), ((200, 450), (270, 300), (400, 450)))
-    draw.circle(window, (255, 255, 255), (1000, 110), 50)
-    draw.circle(window, (255, 255, 255), (1050, 110), 50)
-    draw.circle(window, (255, 255, 255), (1100, 110), 50)
-    draw.rect(window, (0, 0, 128), (220, 540, 35, 50))
-    draw.rect(window, (255, 255, 255), (290, 500, 85, 150))
-    draw.circle(window, (0, 0, 0), (300, 600), 5)
-    draw.circle(window, (255, 255, 0), (80, 70), 50)
-    draw.rect(window, (150, 75, 0), (550, 500, 50, 150))
-    draw.circle(window, (0, 255, 0), (570, 500), 65)
-    draw.circle(window, (255, 0, 0), (570, 500), 10)
-    draw.circle(window, (255, 255, 0), (570, 530), 10)
-    draw.circle(window, (255, 165, 0), (530, 500), 10)
-    draw.circle(window, (128, 0, 128), (550, 500), 5)
+    pygame.draw.rect(window, (150, 75, 0), (0, 650, 2000, 100))
+    pygame.draw.rect(window, (128, 0, 128), (200, 450, 200, 200))
+    pygame.draw.circle(window, (255, 255, 255), (950, 110), 50)
+    pygame.draw.polygon(window, (255, 165, 0), ((200, 450), (270, 300), (400, 450)))
+    pygame.draw.circle(window, (255, 255, 255), (1000, 110), 50)
+    pygame.draw.circle(window, (255, 255, 255), (1050, 110), 50)
+    pygame.draw.circle(window, (255, 255, 255), (1100, 110), 50)
+    pygame.draw.rect(window, (0, 0, 128), (220, 540, 35, 50))
+    pygame.draw.rect(window, (255, 255, 255), (290, 500, 85, 150))
+    pygame.draw.circle(window, (0, 0, 0), (300, 600), 5)
+    pygame.draw.circle(window, (255, 255, 0), (80, 70), 50)
+    pygame.draw.rect(window, (150, 75, 0), (550, 500, 50, 150))
+    pygame.draw.circle(window, (0, 255, 0), (570, 500), 65)
+    pygame.draw.circle(window, (255, 0, 0), (570, 500), 10)
+    pygame.draw.circle(window, (255, 255, 0), (570, 530), 10)
+    pygame.draw.circle(window, (255, 165, 0), (530, 500), 10)
+    pygame.draw.circle(window, (128, 0, 128), (550, 500), 5)
     
 
     window.blit(batman_img, (40, 460))
