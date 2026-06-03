@@ -1,133 +1,36 @@
 import pygame
 import sys
 
-# Inicialização
 pygame.init()
-LARGURA, ALTURA = 800, 600
-screen = pygame.display.set_mode((LARGURA, ALTURA))
-pygame.display.set_caption('Jogo Side-Scroller com Pygame')
+screen = pygame.display.set_mode((800, 600))
+pygame.display.set_caption('Jogo Side-Scroller')
 clock = pygame.time.Clock()
+tile_size = 40
 
 mapa=[
-    "................T",
-    "................T",
-    ".......TTT......T",
-    "................T",
-    "..TTT...........T",
-    "................T",
-    ".......TTT......T",
-    ".T..............T",
-    "TTTTTTTTTTTTTTTTT",
-] carregar_mapa('mapa.txt')
+"WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW",
+"W                                        W",
+"W                                        W",
+"W                                        W",
+"W         P            P                 W",
+"W       PPPPP        PPPPP               W",
+"W                                        W",
+"W                                        W",
+"W                    P                   W",
+"W                  PPPPP                 W",
+"W       P                        P       W",
+"W     PPPPP                    PPPPP     W",
+"W                                        W",
+"W                                        W",
+"W                                        W",
+"WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW",
+]
 
-# Carregar o mapa a partir de um arquivo .txt
 def carregar_mapa(arquivo):
     with open(arquivo, 'r') as f:
         return [linha.strip() for linha in f.readlines()]
 
-
-TIPO_TILE = 40  # Tamanho do tile em pixels
-
-# --- CLASSES DO JOGO ---
-
-class Jogador(pygame.sprite.Sprite):
-    def __init__(self, x, y):
-        super().__init__()
-        # EXTRA: Dicionário para acessar o corte / estados diretamente
-        # (Ideal para quando carregar a imagem principal)
-        self.animacoes = {
-            'idle': pygame.Surface((32, 48)), 
-            'run': pygame.Surface((32, 48)),
-            'jump': pygame.Surface((32, 48))
-        }
-        # Apenas para fins visuais neste exemplo (usar imagens reais depois)
-        self.animacoes['idle'].fill((255, 0, 0)) # Vermelho: parado
-        self.animacoes['run'].fill((0, 255, 0))   # Verde: correndo
-        self.animacoes['jump'].fill((0, 0, 255))  # Azul: pulando
-
-        self.image = self.animacoes['idle']
-        self.rect = self.image.get_rect()
-        self.rect.x = x
-        self.rect.y = y
-
-        # Movimento e Física
-        self.vel_x = 0
-        self.vel_y = 0
-        self.gravidade = 0.8
-        self.velocidade_jogador = 5
-        self.forca_pulo = -15
-        self.no_chao = False
-        self.direcao = 1 # 1 = direita, -1 = esquerda
-
-    def movimentar(self):
-        self.vel_x = 0
-        keys = pygame.key.get_pressed()
-
-        # Esquerda e Direita
-        if keys[pygame.K_LEFT]:
-            self.vel_x = -self.velocidade_jogador
-            self.direcao = -1
-        if keys[pygame.K_RIGHT]:
-            self.vel_x = self.velocidade_jogador
-            self.direcao = 1
-
-        # Pulo (disponível quando estiver no chão)
-        if keys[pygame.K_SPACE] and self.no_chao:
-            self.vel_y = self.forca_pulo
-            self.no_chao = False
-
-        # Gravidade
-        self.vel_y += self.gravidade
-        self.rect.y += self.vel_y
-
-    # Colisão usando a função ensinada em sala: rect.colliderect()
-    def aplicar_colisoes(self, eixo, blocos):
-        if eixo == 'x':
-            for bloco in blocos:
-                if self.rect.colliderect(bloco.rect):
-                    if self.vel_x > 0: # Indo para a direita
-                        self.rect.right = bloco.rect.left
-                    if self.vel_x < 0: # Indo para a esquerda
-                        self.rect.left = bloco.rect.right
-        
-        if eixo == 'y':
-            for bloco in blocos:
-                if self.rect.colliderect(bloco.rect):
-                    if self.vel_y > 0: # Caindo
-                        self.rect.bottom = bloco.rect.top
-                        self.vel_y = 0
-                        self.no_chao = True
-                    elif self.vel_y < 0: # Pulando e batendo a cabeça
-                        self.rect.top = bloco.rect.bottom
-                        self.vel_y = 0
-
-    def atualizar_animacao(self):
-        # Seleciona o estado utilizando o dicionário de animações
-        if not self.no_chao:
-            self.image = self.animacoes['jump']
-        elif self.vel_x != 0:
-            self.image = self.animacoes['run']
-        else:
-            self.image = self.animacoes['idle']
-            
-        # Caso o jogador vire para a esquerda, espelha a imagem
-        if self.direcao == -1:
-            self.image = pygame.transform.flip(self.image, True, False)
-
-    def update(self, blocos):
-        self.movimentar()
-        self.aplicar_colisoes('x', blocos)
-        self.aplicar_colisoes('y', blocos)
-        self.atualizar_animacao()
-
-class Bloco(pygame.sprite.Sprite):
-    def __init__(self, x, y):
-        super().__init__()
-        self.image = pygame.Surface((TIPO_TILE, TIPO_TILE))
-        self.image.fill((100, 100, 100)) # Cinza para obstáculo
-        self.rect = self.image.get_rect()
-        self.rect.x = x
-        self.rect.y = y
+mapa_dados = carregar_mapa(mapa)
 
 class Camera:
     def __init__(self, largura_mapa, altura_mapa):
@@ -138,57 +41,136 @@ class Camera:
     def aplicar(self, entidade):
         return entidade.rect.move(self.camera.topleft)
 
+    def aplicar_posicao(self, pos_x, pos_y):
+        return pos_x + self.camera.x, pos_y + self.camera.y
+
     def atualizar(self, alvo):
-        # Centraliza a câmera no personagem
-        x = -alvo.rect.x + int(LARGURA / 2)
-        y = -alvo.rect.y + int(ALTURA / 2)
-
-        # Limita a câmera para não mostrar fora do mapa
-        x = min(0, x)  # Limite esquerdo
-        x = max(-(self.largura - LARGURA), x) # Limite direito
-        y = min(0, y)  # Limite superior
-        y = max(-(self.altura - ALTURA), y) # Limite inferior
-
+        x = -alvo.rect.x + int(400)
+        y = -alvo.rect.y + int(300)
+        x = min(0, x)  
+        x = max(-(self.largura - 800), x) 
+        y = min(0, y)  
+        y = max(-(self.altura - 600), y)  
         self.camera = pygame.Rect(x, y, self.largura, self.altura)
 
-# --- CARREGAR O CENÁRIO ---
+class Jogador(pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        super().__init__()
+        try:
+            self.sheet = pygame.image.load('Soldier.png').convert_alpha()
+        except:
+            self.sheet = pygame.Surface((30, 50))
+            self.sheet.fill((255, 0, 0))
 
-todas_as_sprites = pygame.sprite.Group()
-blocos = pygame.sprite.Group()
+        self.frames_andando_direita = [
+            self.sheet.subsurface((0, 0, 32, 32)),
+            self.sheet.subsurface((32, 0, 32, 32)),
+            self.sheet.subsurface((64, 0, 32, 32))
+        ]
+        
+        self.animacoes = {
+            'idle': self.sheet.subsurface((0, 0, 32, 32)),
+            'direita': self.frames_andando_direita,
+            'esquerda': [pygame.transform.flip(f, True, False) for f in self.frames_andando_direita],
+            'pulando': self.sheet.subsurface((32, 0, 32, 32))
+        }
 
-largura_mapa = len(mapa[0]) * TIPO_TILE
-altura_mapa = len(mapa) * TIPO_TILE
+        self.imagem_atual = 'idle'
+        self.frame_index = 0
+        self.image = self.animacoes[self.imagem_atual]
+        self.rect = self.image.get_rect(topleft=(x, y))
 
-# Montando o mapa
-for i, linha in enumerate(mapa):
-    for j, caractere in enumerate(linha):
-        if caractere == 'T':
-            bloco = Bloco(j * TIPO_TILE, i * TIPO_TILE)
-            blocos.add(bloco)
-            todas_as_sprites.add(bloco)
+        self.vx = 0
+        self.vy = 0
+        self.gravidade = 0.8
+        self.no_chao = False
 
-# Personagem spawnando no topo
-player = Jogador(50, 50)
-todas_as_sprites.add(player)
+    def get_input(self):
+        keys = pygame.key.get_pressed()
+        self.vx = 0
+        
+        if keys[pygame.K_LEFT]:
+            self.vx = -5
+            self.imagem_atual = 'esquerda'
+        elif keys[pygame.K_RIGHT]:
+            self.vx = 5
+            self.imagem_atual = 'direita'
+        else:
+            self.imagem_atual = 'idle'
 
-camera = Camera(largura_mapa, altura_mapa)
+        if keys[pygame.K_SPACE] and self.no_chao:
+            self.vy = -12
+            self.no_chao = False
 
-# --- GAME LOOP ---
+    def aplicar_gravidade(self):
+        self.vy += self.gravidade
+        self.rect.y += self.vy
+
+    def colisao_tiles(self, direcao, blocos):
+        if direcao == 'horizontal':
+            for bloco in blocos:
+                if self.rect.colliderect(bloco):
+                    if self.vx > 0: self.rect.right = bloco.left
+                    if self.vx < 0: self.rect.left = bloco.right
+        
+        if direcao == 'vertical':
+            for bloco in blocos:
+                if self.rect.colliderect(bloco):
+                    if self.vy > 0:
+                        self.rect.bottom = bloco.top
+                        self.vy = 0
+                        self.no_chao = True
+                    if self.vy < 0:
+                        self.rect.top = bloco.bottom
+                        self.vy = 0
+
+    def update(self):
+        self.get_input()
+        self.aplicar_gravidade()
+
+        if self.imagem_atual in ['direita', 'esquerda']:
+            self.frame_index += 0.2
+            if self.frame_index >= len(self.animacoes[self.imagem_atual]):
+                self.frame_index = 0
+            self.image = self.animacoes[self.imagem_atual][int(self.frame_index)]
+        else:
+            self.image = self.animacoes[self.imagem_atual]
+
+
+player = Jogador(100, 100)
+todos_sprites = pygame.sprite.Group()
+todos_sprites.add(player)
+
+largura_mundo = len(mapa_dados[0]) * tile_size
+altura_mundo = len(mapa_dados) *tile_size
+camera = Camera(largura_mundo, altura_mundo)
+
 while True:
     for ev in pygame.event.get():
         if ev.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
 
-    screen.fill((30, 30, 30)) # Cor de fundo da fase
+    screen.fill((135, 206, 235))
 
-    # Atualizações
-    player.update(blocos)
+    tiles_colisao = []
+    for i, linha in enumerate(mapa_dados):
+        for j, caractere in enumerate(linha):
+            tile_rect = pygame.Rect(j * tile_size, i * tile_size, tile_size, tile_size)
+            if caractere == 'W':  
+                pygame.draw.rect(screen, (100, 50, 0), camera.aplicar(tile_rect))
+                tiles_colisao.append(tile_rect)
+            elif caractere == 'P':  
+                pygame.draw.rect(screen, (34, 139, 34), camera.aplicar(tile_rect))
+                tiles_colisao.append(tile_rect)
+
+    player.rect.x += player.vx
+    player.colisao_tiles('horizontal', tiles_colisao)
+    player.colisao_tiles('vertical', tiles_colisao)
+
     camera.atualizar(player)
 
-    # Desenho com a câmera aplicada
-    for sprite in todas_as_sprites:
-        screen.blit(sprite.image, camera.aplicar(sprite))
+    screen.blit(player.image, camera.aplicar(player))
 
     pygame.display.update()
-    clock.tick(60
+    clock.tick(60)
