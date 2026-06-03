@@ -10,8 +10,8 @@ tile_size = 40
 mapa=[
 "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW",
 "W                                        W",
-"W                                        W",
-"W                                        W",
+"W                              P         W",
+"W                            PPPPP       W",
 "W         P            P                 W",
 "W       PPPPP        PPPPP               W",
 "W                                        W",
@@ -20,8 +20,8 @@ mapa=[
 "W                  PPPPP                 W",
 "W       P                        P       W",
 "W     PPPPP                    PPPPP     W",
-"W                                        W",
-"W                                        W",
+"W                    P                   W",
+"W                  PPPPP                 W",
 "W                                        W",
 "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW",
 ]
