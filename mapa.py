@@ -26,11 +26,9 @@ mapa=[
 "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW",
 ]
 
-def carregar_mapa(arquivo):
-    with open(arquivo, 'r') as f:
+def carregar_mapa(mapa):
+    with open(mapa, 'r') as f:
         return [linha.strip() for linha in f.readlines()]
-
-mapa_dados = carregar_mapa(mapa)
 
 class Camera:
     def __init__(self, largura_mapa, altura_mapa):
@@ -141,8 +139,8 @@ player = Jogador(100, 100)
 todos_sprites = pygame.sprite.Group()
 todos_sprites.add(player)
 
-largura_mundo = len(mapa_dados[0]) * tile_size
-altura_mundo = len(mapa_dados) *tile_size
+largura_mundo = len(mapa[0]) * tile_size
+altura_mundo = len(mapa) *tile_size
 camera = Camera(largura_mundo, altura_mundo)
 
 while True:
@@ -154,13 +152,13 @@ while True:
     screen.fill((135, 206, 235))
 
     tiles_colisao = []
-    for i, linha in enumerate(mapa_dados):
-        for j, caractere in enumerate(linha):
+    for i in range(len(mapa)):
+        for j in range(len(mapa[i])):
             tile_rect = pygame.Rect(j * tile_size, i * tile_size, tile_size, tile_size)
-            if caractere == 'W':  
+            if mapa[i][j] == 'W':  
                 pygame.draw.rect(screen, (100, 50, 0), camera.aplicar(tile_rect))
                 tiles_colisao.append(tile_rect)
-            elif caractere == 'P':  
+            elif mapa[i][j] == 'P':  
                 pygame.draw.rect(screen, (34, 139, 34), camera.aplicar(tile_rect))
                 tiles_colisao.append(tile_rect)
 
